@@ -25,6 +25,6 @@ To generate your own software architecture diagram:
 
 #### 2.2. Readme <a id="Readme"/> 
 
-Use the template under: [Readme Template](https://github.com/squirrel-project/squirrel_recommender/blob/master/templates/README.md) to create your repository documentation. Please take [squirrel_robotino](https://github.com/squirrel-project/squirrel_robotino/blob/indigo_dev/README.md) as example.
+Use the template under: [Readme Template](https://raw.githubusercontent.com/squirrel-project/squirrel_recommender/master/templates/README.md) to create your repository documentation. Please see [squirrel_robotino](https://github.com/squirrel-project/squirrel_robotino/blob/indigo_dev/README.md) as example.
 
 ### 3. Hardware Tests <a id="Hardware-test"/> 
