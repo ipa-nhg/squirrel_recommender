@@ -1,10 +1,19 @@
 echo "Executing adduser"
 sudo /usr/sbin/adduser $1
+sudo adduser $1 dialout 
+sudo adduser $1 cdrom 
+sudo adduser $1 floppy 
+sudo adduser $1 audio
+sudo adduser $1 video
+sudo adduser $1 plugdev
+sudo adduser $1 users 
+
 if [ "$1" != "" ]; then
 	echo "setup bash environment"
-	sudo cp /home/squirrel/git/squirrel-recommender/setup_robotino/user.bashrc /u/$1/.bashrc
+	sudo cp /home/squirrel/squirrel_recommender/setup_robotino/user.bashrc  /home/$1/.bashrc
 	sudo sed -i "s/myrobot/$ROBOT/g" /u/$1/.bashrc
 	sudo sed -i "s/mydistro/$ROS_DISTRO/g" /u/$1/.bashrc
+
 
 	if [ ! -d /u/$1/.ssh ]; then
 		echo "create new ssh key"
