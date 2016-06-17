@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+	
+	<arg name="robot" default="myrobot"/>
+	<!--arg name="pkg_env_config" default="cob_default_env_config"/-->
+
+	<include file="$(find robotino_bringup)/launch/robot.launch" >
+                <arg name="robot" value="$(arg robot)" />
+	</include>
+
+</launch>

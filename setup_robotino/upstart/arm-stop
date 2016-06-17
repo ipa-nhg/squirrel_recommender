@@ -1,0 +1,5 @@
+#!/bin/bash
+PID2=$(cat /tmp/startarm.pid)
+logger -p user.info "Attempting to arm low level control.launch (PID $PID2)"
+kill -9 $PID2
+

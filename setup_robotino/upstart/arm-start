@@ -1,0 +1,18 @@
+#!/bin/bash
+  rm /home/robotino/ll_arm/squirrel/debug.log
+  cd /home/robotino/ll_arm/squirrel
+  squirrel-server --extended configs/squirrel-tuw.yaml &
+  PID=$!
+  echo "$PID" > /tmp/startarm.pid
+  while [ true ]
+   do
+     grep -R "DEBUG - serve - Starting server" /home/robotino/ll_arm/squirrel/debug.log
+		if [ $? -ne 0 ] ; then
+		  echo "ARM controller still not running"
+		else
+		  echo "ARM controller is running"
+		  break
+		fi
+		  sleep 1
+  done
+
