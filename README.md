@@ -21,7 +21,7 @@ The first step is create a new user "squirrel":
 sudo adduser squirrel
 sudo adduser squirrel sudo 
 ```
-Login with your new user squirrel and install the setup. The setup of the robot can be done using a bash script. The script is in the squirrel_recommender repository, you can get it using the following command:
+Login with your new user "squirrel" and install the setup. The setup of the robot can be done using a bash script. The script is in the squirrel_recommender repository, you can get it using the following command:
 ```
 wget https://raw.githubusercontent.com/squirrel-project/squirrel_recommender/master/setup_robotino/InstallSquirrel.sh
 chmod +x InstallSquirrel.sh
@@ -39,9 +39,9 @@ The script allow two types of installation:
 
 ##### New users
 
-When the installation process finish you will have on your robot a new user, with a stable version of the bringup level drivers. This user will be used by the upstart job to init your robot, and for other users als reference. Please **NEVER** use the squirrel user to develop or test new code.
+When the installation process finish you will have on your robot a new user, with a stable version of the bringup level drivers. This user will be used by the upstart job to init your robot, and for other users as reference. Please **NEVER** use the "squirrel" user to develop or test new code.
 
-Each person who wants to use the robot should have a new account , an accound can be created with the following command
+Each person who wants to use the robot should have an account , an accound can be created by the "squirrel" user with the following command:
 ```
 sudo robotino-adduser *UserName*
 ```
@@ -49,14 +49,15 @@ This user will be automatically configured, getting the necessary rights to star
 ```
 /home/UserName/catkin_ws/src:/home/squirrel/catkin_ws/src:/opt/ros/indigo/share:/opt/ros/indigo/stacks
 ```
-That means, if ROS has to find a package, first will check if my UserName has an Overlay, if not will check if squirrel user has an Overlay and the last option will be the release. That means, if I want to test the actual status of the perception. I can create a new a new account "perception" ,and clone into /home/perception/catkin_ws/src the perception repository, compile only the perception repository and run it. All the messages and common software package needed are already on *squirrel* user compiled.
+That means, if ROS needs to find a package, first will check if my UserName has an Overlay, if not will check if squirrel user has an Overlay and as last option will take the ROS release. 
+For example, if I want to test the actual status of the perception. I can create a new account "perception", and clone into */home/perception/catkin_ws/src* the perception repository, compile only the perception repository and run it. All the messages and common software package needed are already on "squirrel" user compiled. 
 
 #### 1.2. User Manual <a id="User-manual"/> 
 ##### Start and stop the robot
 
-Automatically and by default (if you execute the upstart installation) the drivers of the robot will be started on Boot. This process will run as a Background job, calling the arm server, waiting until the arm is ready and starting the robot.laucnh. Usually the robot with arm will required some minutes to start up, you can hear a "Click" when the drivers are already launched and check with a *rostopic list* command ifthe launch file started.
+Automatically and by default (if you executed the upstart installation) the bringup drivers of the robot will be started on Boot. This process will run as a background job, calling the arm server, waiting until the arm is ready and starting the robot.launch. Usually the robot with arm will require some minutes to start up, you can hear a "Click" when the drivers are already launched and check with a *rostopic list* command if the launch file was started.
 
-In case that you need to stop the robot drivers you can call the command *sudo robotino-stop* , all the users have rights to call this command as sudo. If you want to start again the low level control of the robot , you can call the command *sudo robotino_start*. These commands use the squirrel user software status, please be sure that this user has always a working version.
+In case that you need to stop the robot drivers you can call the command *sudo robotino-stop* , all the users have rights to call this command as sudo. If you want to start again the low level control of the robot , you can call the command *sudo robotino_start*. These commands use the "squirrel" user software status, please be sure that this user has always a working version.
 
 ### 2. Documentation and Templates <a id="Documentation-and-Templates"/> 
 
