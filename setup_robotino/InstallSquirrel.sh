@@ -44,12 +44,12 @@ function BasicInstallation {
 
   echo -e "\n${green}INFO:Allow squirrel user to execute sudo command without password${NC}\n"
   sleep 5
-  sudo adduser squirrel
+ 
   echo "squirrel ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers
   sudo adduser squirrel dialout
   sudo adduser squirrel audio
   sudo adduser squirrel pulse
-  sudo adduser squirrel sudo    
+    
 
   echo -e "\n${green}INFO: Setup udev rules${NC}\n"
   sleep 5
