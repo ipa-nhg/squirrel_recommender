@@ -34,6 +34,6 @@ roslaunch **package_name file.launch**
 
 ## 3. Software architecture <a id="3--software-architecture"/> 
 
-**node name**: [**node_name**](https://raw.githubusercontent.com/squirrel-project/squirrel_recommender/master/software_architecture/nade_name.png)
+**node name**: ![**node_name**](https://github.com/squirrel-project/**PackageName**/blob/indigo_dev/nade_name.png "Architecture")
 
 <a href="#top">top</a>
