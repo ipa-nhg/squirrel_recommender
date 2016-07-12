@@ -1,0 +1,1 @@
+KERNEL=="js0", SUBSYSTEM=="input" RUN+="/etc/init.d/joystick.sh start"

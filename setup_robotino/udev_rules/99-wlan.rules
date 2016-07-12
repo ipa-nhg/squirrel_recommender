@@ -1,0 +1,4 @@
+# USB device 0x:0x (rtl8187)
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", KERNEL=="wlan0", RUN+="/sbin/ifup wlan0",
+SUBSYSTEM=="net", ACTION=="remove", DRIVERS=="?*", KERNEL=="wlan0", RUN+="/sbin/ifdown wlan0"
+
