@@ -105,6 +105,9 @@ source /etc/robotino.bash.bashrc
 # provide setup scripts for all users
 export PATH=/home/squirrel/squirrel_recommender/setup_robotino:$PATH
 
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
 
 # ROS specific settings
 
