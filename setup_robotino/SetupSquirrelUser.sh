@@ -27,7 +27,7 @@ function CheckUserSudo {
 
 
 #### FUNCTION CREATE squirrel USER
-function CreateSquirrelUser{
+function CreateSquirrelUser {
   echo -e "\n${green}INFO: Create user 'squirrel'${NC}\n"
   if [[sudo adduser squirrel
   if [[ $? != 0 ]]
