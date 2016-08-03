@@ -11,7 +11,35 @@ EOF
 green='\e[0;32m'
 red='\e[0;31m'
 NC='\e[0m' # No Color
+DISTRIB_CODENAME='trusty'
 
+
+#### FUNCTION check if sudo can be executed 
+function CheckUserSudo {
+  if [[ `whoami` != 'squirrel' ]]
+    then
+      echo -e "\n${red}FAILURE: Not running as user 'squirrel'${NC}\n"
+      exit 1
+  fi
+  sudo -v
+  if [[ $? != 0 ]]
+    then 
+      echo -e "\n${red}FAILURE: Squirrel is not able to run sudo ${NC}\n"
+      exit 1
+  fi
+}
+
+
+#### FUNCTION ROS INSTALLATION
+function RosInstallation {
+  echo -e "\n${green}INFO:Setup ROS${NC}\n"
+  sudo sh -c '. /etc/lsb-release && echo "deb http://packages.ros.org.ros.informatik.uni-freiburg.de/ros/ubuntu $DISTRIB_CODENAME main" > /etc/apt/sources.list.d/ros-latest.list'
+  sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 0xB01FA116
+  sudo apt-get update
+  sudo apt-get install ros-indigo-ros-base
+  sudo rosdep init
+  
+}
 
 #### FUNCTION BASIC INSTALLATION
 function BasicInstallation {
@@ -19,7 +47,7 @@ function BasicInstallation {
   echo -e "\n${green}INFO:Installing basic tools${NC}\n"
   sleep 5
   sudo apt-get update
-  sudo apt-get install vim tree gitg meld curl openjdk-6-jdk zsh terminator language-pack-de language-pack-en ipython -y --force-yes
+  sudo apt-get install vim tree gitg meld curl openjdk-6-jdk zsh terminator language-pack-de language-pack-en ipython htop python-pip -y --force-yes
 
   echo -e "\n${green}INFO:Update grub to avoid hangs on reboot${NC}\n"
   sleep 5
@@ -161,15 +189,23 @@ read -p "Continue (y/n)?" choice
 case "$choice" in 
   y|Y ) ;;
   n|N ) exit;;
-  * ) echo "invalid" && exit;;
+  * ) echo "invalid" && exit 1;;
 esac
 
+CheckUserSudo      
+
 read -p "Please select the installation type 
-1.Basic installation
-2.Upstart Installation
+0. ROS installation
+1. Basic installation
+2. Upstart Installation
 
  " choice 
  
+if [[ "$choice" == 0 ]]
+  then
+       RosInstallation
+fi
+
 if [[ "$choice" == 1 ]]
   then
        BasicInstallation
