@@ -87,7 +87,7 @@ function RosInstallation {
   sudo sh -c '. /etc/lsb-release && echo "deb http://packages.ros.org.ros.informatik.uni-freiburg.de/ros/ubuntu $DISTRIB_CODENAME main" > /etc/apt/sources.list.d/ros-latest.list'
   sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 0xB01FA116
   sudo apt-get update
-  sudo apt-get install ros-indigo-ros-base
+  sudo apt-get install ros-indigo-ros-base -y --force-yes
   sudo rosdep init
   
 }
