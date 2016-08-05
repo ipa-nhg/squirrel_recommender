@@ -65,6 +65,13 @@ function CreateSquirrelUser {
         fi
       fi
     done
+  if sudo grep "%sudo ALL=(ALL:ALL) NOPASSWD: ALL" /etc/sudoers &> /dev/null
+    then
+      echo -e "\n${green}INFO: Group sudo is already in sudoers file${NC}\n"
+  else
+    echo -e "\n${green}INFO: Allow group sudo to execute sudo${NC}\n"
+    echo "%sudo ALL=(ALL:ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers &> /dev/null
+  fi    
   
   if sudo grep "squirrel ALL=(ALL) NOPASSWD: ALL" /etc/sudoers &> /dev/null
     then
@@ -72,13 +79,6 @@ function CreateSquirrelUser {
   else
     echo -e "\n${green}INFO: Allow squirrel user to execute sudo command without password${NC}\n"
     echo "squirrel ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers &> /dev/null
-  fi    
-  if sudo grep "%sudo   ALL=(ALL:ALL) ALL" /etc/sudoers &> /dev/null
-    then
-      echo -e "\n${green}INFO: Group sudo is already in sudoers file${NC}\n"
-  else
-    echo -e "\n${green}INFO: Allow group sudo to execute sudo${NC}\n"
-    echo "%sudo   ALL=(ALL:ALL) ALL" | sudo tee -a /etc/sudoers &> /dev/null
   fi    
 }
 
