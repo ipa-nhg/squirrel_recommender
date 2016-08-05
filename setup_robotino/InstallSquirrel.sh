@@ -71,14 +71,14 @@ function CreateSquirrelUser {
       echo -e "\n${green}INFO: User squirrel is already in sudoers file${NC}\n"
   else
     echo -e "\n${green}INFO: Allow squirrel user to execute sudo command without password${NC}\n"
-    echo "squirrel ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers
+    echo "squirrel ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers &> /dev/null
   fi    
   if sudo grep "%sudo   ALL=(ALL:ALL) ALL" /etc/sudoers &> /dev/null
     then
       echo -e "\n${green}INFO: Group sudo is already in sudoers file${NC}\n"
   else
     echo -e "\n${green}INFO: Allow group sudo to execute sudo${NC}\n"
-    echo "%sudo   ALL=(ALL:ALL) ALL" | sudo tee -a /etc/sudoers
+    echo "%sudo   ALL=(ALL:ALL) ALL" | sudo tee -a /etc/sudoers &> /dev/null
   fi    
 }
 
@@ -110,7 +110,7 @@ function BasicInstallation {
   if grep -q GRUB_RECORDFAIL_TIMEOUT= /etc/default/grub ; then
     echo "found GRUB_RECORD_FAIL flag already, skipping update-grub call"
   else
-    echo GRUB_RECORDFAIL_TIMEOUT=10 | sudo tee -a /etc/default/grub
+    echo GRUB_RECORDFAIL_TIMEOUT=10 | sudo tee -a /etc/default/grub &> /dev/null
     sudo update-grub
   fi
 
@@ -119,7 +119,7 @@ function BasicInstallation {
   sleep 5
   sudo apt-get install openssh-server -y --force-yes
   echo -e "\n${green}INFO: Let the server send a alive interval to clients to not get a broken pipe${NC}\n"
-  echo "ClientAliveInterval 60" | sudo tee -a /etc/ssh/sshd_config
+  echo "ClientAliveInterval 60" | sudo tee -a /etc/ssh/sshd_config &> /dev/null
   sudo sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
   sudo -u squirrel -i `pwd`/SquirrelSetup.sh
 
@@ -147,14 +147,14 @@ function UpstartInstallation {
     then
       echo -e ""
   else
-    echo "%users ALL=NOPASSWD:/usr/sbin/robotino-start" | sudo tee -a /etc/sudoers
+    echo "%users ALL=NOPASSWD:/usr/sbin/robotino-start" | sudo tee -a /etc/sudoers &> /dev/null
   fi    
 
   if sudo grep "%users ALL=NOPASSWD:/usr/sbin/robotino-stop" /etc/sudoers &> /dev/null
     then
       echo -e ""
   else
-    echo "%users ALL=NOPASSWD:/usr/sbin/robotino-stop" | sudo tee -a /etc/sudoers
+    echo "%users ALL=NOPASSWD:/usr/sbin/robotino-stop" | sudo tee -a /etc/sudoers &> /dev/null
   fi    
 }
 
