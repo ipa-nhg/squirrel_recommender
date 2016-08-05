@@ -65,6 +65,13 @@ function CreateSquirrelUser {
         fi
       fi
     done
+  if sudo grep "/home/squirrel/squirrel_recommender/setup_robotino" /etc/sudoers &> /dev/null
+    then
+      echo -e ""
+  else
+    echo 'Defaults        secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/squirrel/squirrel_recommender/setup_robotino"' | sudo tee -a /etc/sudoers &> /dev/null
+  fi    
+
   if sudo grep "%sudo ALL=(ALL:ALL) NOPASSWD: ALL" /etc/sudoers &> /dev/null
     then
       echo -e "\n${green}INFO: Group sudo is already in sudoers file${NC}\n"
