@@ -12,7 +12,8 @@ green='\e[0;32m'
 red='\e[0;31m'
 NC='\e[0m' # No Color
 DISTRIB_CODENAME='trusty'
-
+#ROS_MIRROR='http://packages.ros.org/ros/ubuntu'
+ROS_MIRROR='http://packages.ros.org.ros.informatik.uni-freiburg.de/ros/ubuntu'
 
 #### FUNCTION check if sudo can be executed 
 function CheckUserSudo () {
@@ -83,9 +84,13 @@ function CreateSquirrelUser {
 
 #### FUNCTION ROS INSTALLATION
 function RosInstallation {
-  echo -e "\n${green}INFO: Setup ROS${NC}\n"
-  sudo sh -c '. /etc/lsb-release && echo "deb http://packages.ros.org.ros.informatik.uni-freiburg.de/ros/ubuntu $DISTRIB_CODENAME main" > /etc/apt/sources.list.d/ros-latest.list'
+
+  echo -e "\n${green}   INFO: Setup your source.list${NC}\n"
+  echo -e "\n${green}   INFO: ROS_MIRROR is set to Freiburg University. Can be changed in InstallSquirrel.sh if needed${NC}\n"
+  sudo sh -c '. /etc/lsb-release && echo "deb $ROS_MIRROR $DISTRIB_CODENAME main" > /etc/apt/sources.list.d/ros-latest.list'
+  echo -e "\n${green}   INFO: Set up your keys${NC}\n"
   sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 0xB01FA116
+
   sudo apt-get update
   sudo apt-get install ros-indigo-ros-base -y --force-yes
   sudo rosdep init
