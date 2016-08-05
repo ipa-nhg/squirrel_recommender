@@ -85,10 +85,10 @@ function CreateSquirrelUser {
 #### FUNCTION ROS INSTALLATION
 function RosInstallation {
 
-  echo -e "\n${green}   INFO: Setup your source.list${NC}\n"
-  echo -e "\n${green}   INFO: ROS_MIRROR is set to Freiburg University. Can be changed in InstallSquirrel.sh if needed${NC}\n"
-  sudo sh -c '. /etc/lsb-release && echo "deb $ROS_MIRROR $DISTRIB_CODENAME main" > /etc/apt/sources.list.d/ros-latest.list'
-  echo -e "\n${green}   INFO: Set up your keys${NC}\n"
+  echo -e "\n${green} INFO: Setup your source.list${NC}\n"
+  echo -e "\n${green} INFO: ROS_MIRROR is set to ${ROS_MIRROR} {NC}\n"
+  sudo sh -c '. /etc/lsb-release && echo "deb '${ROS_MIRROR}' '${DISTRIB_CODENAME}' main" > /etc/apt/sources.list.d/ros-latest.list'
+  echo -e "\n${green} INFO: Set up your keys${NC}\n"
   sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 0xB01FA116
 
   sudo apt-get update
