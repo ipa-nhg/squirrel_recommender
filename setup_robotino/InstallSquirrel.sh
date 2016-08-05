@@ -143,6 +143,13 @@ function UpstartInstallation {
 
   echo -e "\n${green}INFO: Define users rights${NC}\n"
   sleep 5
+  if sudo grep "/home/squirrel/squirrel_recommender/setup_robotino" /etc/sudoers &> /dev/null
+    then
+      echo -e ""
+  else
+    echo 'Defaults        secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/squirrel/squirrel_recommender/setup_robotino"' | sudo tee -a /etc/sudoers &> /dev/null
+  fi    
+
   if sudo grep "%users ALL=NOPASSWD:/usr/sbin/robotino-start" /etc/sudoers &> /dev/null
     then
       echo -e ""

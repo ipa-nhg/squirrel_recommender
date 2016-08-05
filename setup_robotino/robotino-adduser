@@ -1,14 +1,16 @@
-echo "Executing adduser"
-sudo /usr/sbin/adduser $1
-sudo adduser $1 dialout 
-sudo adduser $1 cdrom 
-sudo adduser $1 floppy 
-sudo adduser $1 audio
-sudo adduser $1 video
-sudo adduser $1 plugdev
-sudo adduser $1 users 
+#!/bin/bash
 
 if [ "$1" != "" ]; then
+    echo "Executing adduser"
+    sudo /usr/sbin/adduser $1
+    sudo adduser $1 dialout 
+    sudo adduser $1 cdrom 
+    sudo adduser $1 floppy 
+    sudo adduser $1 audio
+    sudo adduser $1 video
+    sudo adduser $1 plugdev
+    sudo adduser $1 users 
+
 	echo "setup bash environment"
 	sudo cp /home/squirrel/squirrel_recommender/setup_robotino/user.bashrc  /home/$1/.bashrc
 	sudo sed -i "s/myrobot/$ROBOT/g" /u/$1/.bashrc
@@ -25,6 +27,9 @@ if [ "$1" != "" ]; then
 	sudo -u $1 ssh $1@robotino 'exit'
 	sudo su -c "rosdep update" $1
 	sudo su -c "mkdir -p ~/catkin_ws" $1
+    
+    echo "done adding user"
+else
+    echo "No username provided"
 fi
 
-echo "done adding user"
