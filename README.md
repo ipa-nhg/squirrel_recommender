@@ -16,15 +16,13 @@ This section provide some instructions to install a standard setup.
  
 #### 1.1. Administrator Manual <a id="Administrator-manual"/> 
 ##### Installation
-The first step is create a new user "squirrel":
+The first step is to download the 2 bash scripts and execute them as user robotino:
 ```
-sudo adduser squirrel
-sudo adduser squirrel sudo 
-```
-Login with your new user "squirrel" and install the setup. The setup of the robot can be done using a bash script. The script is in the squirrel_recommender repository, you can get it using the following command:
-```
-wget https://raw.githubusercontent.com/squirrel-project/squirrel_recommender/master/setup_robotino/InstallSquirrel.sh
+wget https://raw.githubusercontent.com/bajo/squirrel_recommender/fix_insta_script/setup_robotino/InstallSquirrel.sh
+wget https://raw.githubusercontent.com/bajo/squirrel_recommender/fix_insta_script/setup_robotino/SquirrelSetup.sh
 chmod +x InstallSquirrel.sh
+chmod +x SquirrelSetup.sh
+./InstallSquirrel.sh -r robot_name -arm true
 ```
 
 The installation script needs the parameters robot and arm, where:
@@ -32,8 +30,9 @@ The installation script needs the parameters robot and arm, where:
 * -r robot: is the robot name (ipa-robotino)
 * -arm : should be true if your robot has an arm and false if it doesn't
 
-The script allow two types of installation:
-
+The script allows you to:
+* Create and setup the squirrel user
+* Install basic ROS system
 * Basic Installation. This part will install some basic tools, setup your new squirrel user, clone the necessary repositories, configure the user rights and create the udev rules.
 * Upstart Installation. This installation will create a startup job, your robot will start automatically the low level controls after switch on the platform. 
 

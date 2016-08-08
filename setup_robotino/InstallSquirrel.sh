@@ -11,90 +11,124 @@ EOF
 green='\e[0;32m'
 red='\e[0;31m'
 NC='\e[0m' # No Color
+DISTRIB_CODENAME='trusty'
+#ROS_MIRROR='http://packages.ros.org/ros/ubuntu'
+ROS_MIRROR='http://packages.ros.org.ros.informatik.uni-freiburg.de/ros/ubuntu'
 
+#### FUNCTION check if sudo can be executed 
+function CheckUserSudo () {
+  echo -e "\n${green}CheckUserSudo got $1 as argument${NC}\n"
+  #if [[ $USER != $1 ]]
+  if [[ `whoami` -ne $1 ]]
+    then
+      echo -e "\n${red}FAILURE: Not running as user '$1'${NC}\n"
+      exit 1
+  fi
+  echo -e "\n${green}INFO: Check if user $1 is able to run commands with sudo${NC}\n"
+  sleep 5 
+  sudo -v
+  if [[ $? != 0 ]]
+    then 
+      echo -e "\n${red}FAILURE: $1 is not able to run sudo ${NC}\n"
+      exit 1
+  fi
+}
+
+#### FUNCTION CREATE squirrel USER
+function CreateSquirrelUser {
+  ret=false
+  getent passwd squirrel >/dev/null 2>&1 && ret=true
+  
+  if $ret; then
+    echo -e "\n${green}INFO: User squirrel already exists${NC}\n"
+  else
+    echo -e "\n${green}INFO: Create user 'squirrel'${NC}\n"
+    sudo adduser squirrel
+    if [[ $? != 0 ]]
+      then 
+        echo -e "\n${red}FAILURE: Unable to create user 'squirrel'${NC}\n"
+        exit 1
+    fi
+  fi
+
+  for i in 'sudo' 'dialout' 'audio';
+    do
+      if groups squirrel | grep &>/dev/null $i; then
+        echo -e "\n${green}INFO: User squirrel already in $i${NC}\n"
+      else
+        echo -e "\n${green}INFO: Add user 'squirrel' to group $i${NC}\n"
+        sudo usermod -aG sudo squirrel
+        if [[ $? != 0 ]]
+          then 
+            echo -e "\n${red}FAILURE: Unable to add squirrel to $i${NC}\n"
+            exit 1
+        fi
+      fi
+    done
+  if sudo grep "/home/squirrel/squirrel_recommender/setup_robotino" /etc/sudoers &> /dev/null
+    then
+      echo -e ""
+  else
+    echo 'Defaults        secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/squirrel/squirrel_recommender/setup_robotino"' | sudo tee -a /etc/sudoers &> /dev/null
+  fi    
+
+  if sudo grep "%sudo ALL=(ALL:ALL) NOPASSWD: ALL" /etc/sudoers &> /dev/null
+    then
+      echo -e "\n${green}INFO: Group sudo is already in sudoers file${NC}\n"
+  else
+    echo -e "\n${green}INFO: Allow group sudo to execute sudo${NC}\n"
+    echo "%sudo ALL=(ALL:ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers &> /dev/null
+  fi    
+  
+  if sudo grep "squirrel ALL=(ALL) NOPASSWD: ALL" /etc/sudoers &> /dev/null
+    then
+      echo -e "\n${green}INFO: User squirrel is already in sudoers file${NC}\n"
+  else
+    echo -e "\n${green}INFO: Allow squirrel user to execute sudo command without password${NC}\n"
+    echo "squirrel ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers &> /dev/null
+  fi    
+}
+
+#### FUNCTION ROS INSTALLATION
+function RosInstallation {
+
+  echo -e "\n${green} INFO: Setup your source.list${NC}\n"
+  echo -e "\n${green} INFO: ROS_MIRROR is set to ${ROS_MIRROR} {NC}\n"
+  sudo sh -c '. /etc/lsb-release && echo "deb '${ROS_MIRROR}' '${DISTRIB_CODENAME}' main" > /etc/apt/sources.list.d/ros-latest.list'
+  echo -e "\n${green} INFO: Set up your keys${NC}\n"
+  sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 0xB01FA116
+
+  sudo apt-get update
+  sudo apt-get install ros-indigo-ros-base -y --force-yes
+  sudo rosdep init
+  
+}
 
 #### FUNCTION BASIC INSTALLATION
 function BasicInstallation {
 
-  echo -e "\n${green}INFO:Installing basic tools${NC}\n"
+  echo -e "\n${green}INFO: Installing basic tools${NC}\n"
   sleep 5
   sudo apt-get update
-  sudo apt-get install vim tree gitg meld curl openjdk-6-jdk zsh terminator language-pack-de language-pack-en ipython -y --force-yes
+  sudo apt-get install vim tree gitg meld curl openjdk-6-jdk zsh terminator language-pack-de language-pack-en ipython htop python-pip -y --force-yes
 
-  echo -e "\n${green}INFO:Update grub to avoid hangs on reboot${NC}\n"
+  echo -e "\n${green}INFO: Update grub to avoid hangs on reboot${NC}\n"
   sleep 5
   if grep -q GRUB_RECORDFAIL_TIMEOUT= /etc/default/grub ; then
     echo "found GRUB_RECORD_FAIL flag already, skipping update-grub call"
   else
-    echo GRUB_RECORDFAIL_TIMEOUT=10 | sudo tee -a /etc/default/grub
+    echo GRUB_RECORDFAIL_TIMEOUT=10 | sudo tee -a /etc/default/grub &> /dev/null
     sudo update-grub
   fi
 
 
-  echo -e "\n${green}INFO:Install openssh server${NC}\n"
+  echo -e "\n${green}INFO: Install openssh server${NC}\n"
   sleep 5
   sudo apt-get install openssh-server -y --force-yes
-  echo -e "\n${green}INFO:Let the server send a alive interval to clients to not get a broken pipe${NC}\n"
-  echo "ClientAliveInterval 60" | sudo tee -a /etc/ssh/sshd_config
+  echo -e "\n${green}INFO: Let the server send a alive interval to clients to not get a broken pipe${NC}\n"
+  echo "ClientAliveInterval 60" | sudo tee -a /etc/ssh/sshd_config &> /dev/null
   sudo sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
-
-  echo -e "\n${green}INFO:Checkout the recommender repository${NC}\n"
-  sleep 5
-  git clone git://github.com/squirrel-project/squirrel_recommender.git
-
-  echo -e "\n${green}INFO:Allow squirrel user to execute sudo command without password${NC}\n"
-  sleep 5
- 
-  echo "squirrel ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers
-  sudo adduser squirrel dialout
-  sudo adduser squirrel audio
-  sudo adduser squirrel pulse
-    
-
-  echo -e "\n${green}INFO: Setup udev rules${NC}\n"
-  sleep 5
-  sudo cp ~/squirrel_recommender/setup_robotino/udev_rules/* /etc/udev/rules.d/.
-  sudo udevadm control --reload-rules
-
-
-  echo -e "\n${green}INFO: Setup bash environment${NC}\n"
-  sleep 5
-  sudo cp /home/squirrel/squirrel_recommender/setup_robotino/robotino.bash.bashrc /etc/robotino.bash.bashrc
-
-  echo -e "\n${green}INFO:  Setup bash environment${NC}\n"
-  sleep 5
-  cp /home/squirrel/squirrel_recommender/setup_robotino/user.bashrc /home/squirrel/.bashrc
-  source /opt/ros/indigo/setup.bash
-  sudo sed -i "s/myrobot/$ROBOT/g" /home/squirrel/.bashrc
-  sudo sed -i "s/mydistro/$ROS_DISTRO/g" /home/squirrel/.bashrc
-  sudo sed -i "s/witharm/$ARM/g" /home/squirrel/.bashrc
-  
-  echo -e "\n${green}INFO:  Create overlays for stacks${NC}\n"
-  sleep 5
-  mkdir /home/squirrel/catkin_ws
-  mkdir /home/squirrel/catkin_ws/src
-  cd /home/squirrel/catkin_ws/src
-  source /opt/ros/indigo/setup.bash
-  catkin_init_workspace
-  cd /home/squirrel/catkin_ws
-  catkin_make
-  cd /home/squirrel/catkin_ws/src
-  git clone https://github.com/squirrel-project/squirrel_robotino
-  git clone https://github.com/squirrel-project/squirrel_common
-  git clone https://github.com/squirrel-project/squirrel_driver
-  git clone https://github.com/squirrel-project/squirrel_kclhand
-  git clone https://github.com/squirrel-project/squirrel_robotino_arm
-  cd /home/squirrel/catkin_ws/
-  catkin_make install
-  rosdep update
-  rosdep install --from-path src -i -y
-  
-  
-  echo -e "\n${green}INFO:  Enable passwordless login${NC}\n"
-  sleep 5
-  ssh-keygen
-  cat /home/squirrel/.ssh/id_rsa.pub | ssh squirrel@robotino "cat >> /home/squirrel/.ssh/authorized_keys"
-
+  sudo -u squirrel -i `pwd`/SquirrelSetup.sh
 
 }
 
@@ -114,11 +148,71 @@ function UpstartInstallation {
   sudo cp -rf /home/squirrel/squirrel_recommender/setup_robotino/upstart/robotino.d/launch /etc/ros/$ROS_DISTRO/robotino.d/
   sudo sed -i "s/myrobot/$ROBOT/g" /etc/ros/$ROS_DISTRO/robotino.d/launch/robot/robot.launch
 
-  echo -e "\n${green}INFO:  Define users rights${NC}\n"
+  echo -e "\n${green}INFO: Define users rights${NC}\n"
   sleep 5
-  sudo echo "%users ALL=NOPASSWD:/usr/sbin/robotino-start" | sudo tee -a /etc/sudoers
-  sudo echo "%users ALL=NOPASSWD:/usr/sbin/robotino-stop" | sudo tee -a /etc/sudoers
+  if sudo grep "/home/squirrel/squirrel_recommender/setup_robotino" /etc/sudoers &> /dev/null
+    then
+      echo -e ""
+  else
+    echo 'Defaults        secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/squirrel/squirrel_recommender/setup_robotino"' | sudo tee -a /etc/sudoers &> /dev/null
+  fi    
+
+  if sudo grep "%users ALL=NOPASSWD:/usr/sbin/robotino-start" /etc/sudoers &> /dev/null
+    then
+      echo -e ""
+  else
+    echo "%users ALL=NOPASSWD:/usr/sbin/robotino-start" | sudo tee -a /etc/sudoers &> /dev/null
+  fi    
+
+  if sudo grep "%users ALL=NOPASSWD:/usr/sbin/robotino-stop" /etc/sudoers &> /dev/null
+    then
+      echo -e ""
+  else
+    echo "%users ALL=NOPASSWD:/usr/sbin/robotino-stop" | sudo tee -a /etc/sudoers &> /dev/null
+  fi    
 }
+
+function Main {
+echo -e '\n################## Main Menu ##################\n'
+read -p "Please select the installation type 
+1. Create squirrel user 
+2. ROS installation
+3. Basic installation
+4. Upstart Installation
+
+q. Quit
+
+ " choice 
+ 
+if [[ "$choice" == 1 ]]
+  then
+       CreateSquirrelUser       
+       Main
+fi
+if [[ "$choice" == 2 ]]
+  then
+       RosInstallation
+       Main
+fi
+
+if [[ "$choice" == 3 ]]
+  then
+       BasicInstallation
+       Main
+fi
+
+if [[ "$choice" == 4 ]]
+  then
+       UpstartInstallation
+       Main
+fi
+
+if [[ "$choice" == 'q' ]]
+  then
+       exit 0 
+fi
+}
+
 ########################################################################
 ############################# INITIAL MENU #############################
 ########################################################################
@@ -161,21 +255,7 @@ read -p "Continue (y/n)?" choice
 case "$choice" in 
   y|Y ) ;;
   n|N ) exit;;
-  * ) echo "invalid" && exit;;
+  * ) echo "invalid" && exit 1;;
 esac
 
-read -p "Please select the installation type 
-1.Basic installation
-2.Upstart Installation
-
- " choice 
- 
-if [[ "$choice" == 1 ]]
-  then
-       BasicInstallation
-fi
-
-if [[ "$choice" == 2 ]]
-  then
-       UpstartInstallation
-fi
+Main
