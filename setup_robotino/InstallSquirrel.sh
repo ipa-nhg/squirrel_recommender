@@ -57,7 +57,7 @@ function CreateSquirrelUser {
         echo -e "\n${green}INFO: User squirrel already in $i${NC}\n"
       else
         echo -e "\n${green}INFO: Add user 'squirrel' to group $i${NC}\n"
-        sudo usermod -aG sudo squirrel
+        sudo usermod -aG $i squirrel
         if [[ $? != 0 ]]
           then 
             echo -e "\n${red}FAILURE: Unable to add squirrel to $i${NC}\n"
