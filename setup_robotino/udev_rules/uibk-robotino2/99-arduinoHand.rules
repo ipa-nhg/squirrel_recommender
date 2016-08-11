@@ -1,0 +1,3 @@
+SUBSYSTEMS=="usb", KERNEL=="ttyACM[0-9]*", ATTRS{idVendor}=="2341", ATTRS{idProduct}=="0042",
+ATTRS{serial}=="55432333038351909251", SYMLINK+="ttyHand",
+MODE="0666"

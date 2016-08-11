@@ -29,7 +29,7 @@ git clone git://github.com/squirrel-project/squirrel_recommender.git
 
 echo -e "\n${green}INFO: Setup udev rules${NC}\n"
 sleep 5
-sudo cp /home/squirrel/squirrel_recommender/setup_robotino/udev_rules/* /etc/udev/rules.d/.
+sudo cp /home/squirrel/squirrel_recommender/setup_robotino/udev_rules/$ROBOT/* /etc/udev/rules.d/.
 sudo udevadm control --reload-rules
 
 echo -e "\n${green}INFO: Setup bash environment${NC}\n"
