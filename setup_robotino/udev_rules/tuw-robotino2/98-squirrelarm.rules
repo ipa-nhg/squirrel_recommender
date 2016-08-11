@@ -1,2 +1,0 @@
-KERNEL=="ttyUSB?", ATTRS{interface}=="FT232R USB UART", SYMLINK+="ttyUSBARM", MODE="0666", GROUP="dialout"
-KERNEL=="ttyACM?", ATTRS{product}=="Robotino 3",ATTRS{idProduct}=="040d", SYMLINK+="ttyACMARM", MODE="0666", GROUP="dialout"
