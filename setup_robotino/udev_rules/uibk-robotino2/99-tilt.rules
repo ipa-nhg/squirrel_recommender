@@ -1,0 +1,2 @@
+# TUW serial number: A9IPDFB3
+SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", ATTRS{serial}=="A9291ZRZ", SYMLINK+="ttyTilt", MODE="0660", GROUP="dialout"
