@@ -28,22 +28,10 @@
 # Please send comments, questions, or patches to code@clearpathrobotics.com 
 ROBOT=$ROBOT
 DISTRO=indigo
-WITHARM=$WITHARM
 
 function log() {
   logger -s -p user.$1 ${@:2}
 }
-
-if ($WITHARM); then
-  sh /home/squirrel/squirrel_recommender/setup_robotino/upstart/arm-start &
-  PID=$!
-  echo "arm started with PID" 
-  echo $PID
-  log info "robot.launch: Started roslaunch as background process, PID $PID"
-  echo "$PID" > /tmp/start_arm.pid
-  wait
-fi
-echo "finish"
 
 source /etc/ros/$DISTRO/robotino.d/setup/setup.sh
 

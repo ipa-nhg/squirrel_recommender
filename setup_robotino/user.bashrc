@@ -114,7 +114,6 @@ export LANGUAGE=en_US.UTF-8
 export MY_CATKIN_WORKSPACE=~/catkin_ws
 
 export ROBOT=myrobot
-export WITHARM=true
 export ROSLAUNCH_SSH_UNKNOWN=1
 export ROS_MASTER_URI=http://robotino:11311
 

@@ -42,7 +42,7 @@ cp /home/squirrel/squirrel_recommender/setup_robotino/user.bashrc /home/squirrel
 source /opt/ros/indigo/setup.bash
 sudo sed -i "s/myrobot/$ROBOT/g" /home/squirrel/.bashrc
 sudo sed -i "s/mydistro/$ROS_DISTRO/g" /home/squirrel/.bashrc
-sudo sed -i "s/witharm/$ARM/g" /home/squirrel/.bashrc
+
 
 echo -e "\n${green}INFO: Create overlays for stacks${NC}\n"
 sleep 5
@@ -58,7 +58,6 @@ git clone https://github.com/squirrel-project/squirrel_robotino
 git clone https://github.com/squirrel-project/squirrel_common
 git clone https://github.com/squirrel-project/squirrel_driver
 git clone https://github.com/squirrel-project/squirrel_kclhand
-git clone https://github.com/squirrel-project/squirrel_robotino_arm
 cd /home/squirrel/catkin_ws/
 catkin_make install
 rosdep update
