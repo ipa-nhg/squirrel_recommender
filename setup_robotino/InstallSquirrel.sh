@@ -1,10 +1,8 @@
-#!/bin/bash
 #### COMMON PARAMETERS
 usage=$(cat <<"EOF"
-USAGE:  ./InstallSquirrel.sh [-r] [-arm]\n
+USAGE:  ./InstallSquirrel.sh [-r] \n
 Where:\n
   -r robot name (example alufr-robotino)\n
-  -arm true or false\n
 
 EOF
 )
@@ -139,7 +137,6 @@ function UpstartInstallation {
   sudo cp /home/squirrel/squirrel_recommender/setup_robotino/upstart/robotino-start /usr/sbin/robotino-start
   sudo sed -i "s/myrobot/$ROBOT/g" /usr/sbin/robotino-start
   sudo sed -i "s/mydistro/$ROS_DISTRO/g" /usr/sbin/robotino-start
-  sudo sed -i "s/witharm/$ARM/g" /usr/sbin/robotino-start
   sudo cp /home/squirrel/squirrel_recommender/setup_robotino/upstart/robotino-stop /usr/sbin/robotino-stop
 	
 
@@ -229,10 +226,6 @@ case $key in
     ROBOT="$1"
     shift
     ;;
-    -arm|--arm)
-    ARM="$1"
-    shift
-    ;;
 esac
 done
 
@@ -241,15 +234,10 @@ if [ -z "$ROBOT" ]; then
     exit
 fi
 
-if [ -z "$ARM" ]; then
-    echo -e $usage
-    exit
-fi
 
 
 echo -e "\n${green}===========================================${NC}\n"
 echo -e ROBOT  = "${green}${ROBOT}${NC}"
-echo -e ARM     = "${green}${ARM}${NC}"
 echo -e "\n${green}===========================================${NC}\n"
 read -p "Continue (y/n)?" choice
 case "$choice" in 
