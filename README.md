@@ -81,7 +81,6 @@ Use the template under: [Readme Template](https://raw.githubusercontent.com/squi
 
 
 ### 4. SQUIRREL Git workflow<a id="Git-workflow"/> 
-
 1. Follow the instructions to create the squirrel user, clone the stable repositories and configure the catkin workspace overlays, which are described in section <a href="#Administrator-manual">Administrator Manual</a>
 
 From here on the squirrel user on the robot should not be used for any development on the robot. Even for the packages which are cloned into /home/squirrel/catkin_ws.
@@ -92,27 +91,23 @@ Clone the repositories in which you want to make and test your changes. Even if 
 
 3. Contribute your code to the squirrel-project's upstream repositories.
    * Clone your fork. (only the first time)
-
 `git clone git@github.com:bajo/squirrel_perception.git`
-
    * Add squirrel-project's upstream as a remote
-
 `git remote add upstream git@github.com:squirrel-project/squirrel_perception.git`
-
   1. Pull the latest changes into your local repo.
-```git pull origin indigo_dev```
+`git pull origin indigo_dev`
   2. Create a new branch for your feature or bug fix
-```git checkout -b feature1```
+`git checkout -b feature1`
   3. Implement your changes, test them, commit them. 
-```git add changed_file.cpp```
-```git commit -m "add feature1 to changed_file.cpp"```
+`git add changed_file.cpp`
+`git commit -m "add feature1 to changed_file.cpp"`
   4. Fetch and merge the latest upstream changes into your development branch
-```git fetch upstream```
-```git merge upstream/indigo_dev```
+`git fetch upstream`
+`git merge upstream/indigo_dev`
   5. If needed, fix merge conflicts and commit them
-```git mergetool```
+`git mergetool`
   6. Push your branch to your fork on github
-```git push origin feature1:feature1```
+`git push origin feature1:feature1`
   7. Open a pull request on github
   8. Wait until you get feedback to your pull request or until it was merged. 
   9. Done
