@@ -89,11 +89,12 @@ All development steps has to be done as the local user (e.g. bajo) in the corres
 1. Login with your user account on the robot (not squirrel).
 Clone the repositories in which you want to make and test your changes. Even if those are one of the repositories which are in squirrel's workspace. ROS will always use the code in your catkin workspace first.
 
-2. Contribute your code to the squirrel-project's upstream repositories.
-   * Clone your fork. (only the first time)
+2. During the first time.
+   * Clone your fork.
 `git clone git@github.com:bajo/squirrel_perception.git`
    * Add squirrel-project's upstream as a remote
 `git remote add upstream git@github.com:squirrel-project/squirrel_perception.git`
+3. Contribute your code to the squirrel-project's upstream repositories.
   1. Pull the latest changes into your local repo.
 `git pull origin indigo_dev`
   2. Create a new branch for your feature or bug fix
