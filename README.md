@@ -81,15 +81,15 @@ Use the template under: [Readme Template](https://raw.githubusercontent.com/squi
 
 
 ### 4. SQUIRREL Git workflow<a id="Git-workflow"/> 
-1. Follow the instructions to create the squirrel user, clone the stable repositories and configure the catkin workspace overlays, which are described in section <a href="#Administrator-manual">Administrator Manual</a>
+Follow the instructions to create the squirrel user, clone the stable repositories and configure the catkin workspace overlays, which are described in section <a href="#Administrator-manual">Administrator Manual</a>
 
 From here on the squirrel user on the robot should not be used for any development on the robot. Even for the packages which are cloned into /home/squirrel/catkin_ws.
 All development steps has to be done as the local user (e.g. bajo) in the corresponding catkin_ws overlay (e.g. /home/bajo/catkin_ws).
 
-2. Login with your user account on the robot (not squirrel).
+1. Login with your user account on the robot (not squirrel).
 Clone the repositories in which you want to make and test your changes. Even if those are one of the repositories which are in squirrel's workspace. ROS will always use the code in your catkin workspace first.
 
-3. Contribute your code to the squirrel-project's upstream repositories.
+2. Contribute your code to the squirrel-project's upstream repositories.
    * Clone your fork. (only the first time)
 `git clone git@github.com:bajo/squirrel_perception.git`
    * Add squirrel-project's upstream as a remote
