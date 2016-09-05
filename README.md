@@ -91,10 +91,12 @@ All development steps has to be done as the local user (e.g. bajo) in the corres
 Clone the repositories in which you want to make and test your changes. Even if those are one of the repositories which are in squirrel's workspace. ROS will always use the code in your catkin workspace first.
 
 3. Contribute your code to the squirrel-project's upstream repositories.
-(only the first time)
-   * Clone your fork. 
+   * Clone your fork. (only the first time)
+
 ```git clone git@github.com:bajo/squirrel_perception.git```
+
    * Add squirrel-project's upstream as a remote
+
 ```git remote add upstream git@github.com:squirrel-project/squirrel_perception.git```
 
   1. Pull the latest changes into your local repo.
