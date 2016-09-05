@@ -93,11 +93,11 @@ Clone the repositories in which you want to make and test your changes. Even if 
 3. Contribute your code to the squirrel-project's upstream repositories.
    * Clone your fork. (only the first time)
 
-```git clone git@github.com:bajo/squirrel_perception.git```
+`git clone git@github.com:bajo/squirrel_perception.git`
 
    * Add squirrel-project's upstream as a remote
 
-```git remote add upstream git@github.com:squirrel-project/squirrel_perception.git```
+`git remote add upstream git@github.com:squirrel-project/squirrel_perception.git`
 
   1. Pull the latest changes into your local repo.
 ```git pull origin indigo_dev```
