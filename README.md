@@ -9,6 +9,7 @@
      1. <a href="#Software-architecture">Software architecture</a>
      2. <a href="#Readme">Readme</a>
 3. <a href="#Hardware-test">Hardware Tests</a>
+4. <a href="#Git-workflow">SQUIRREL Git workflow</a>
 
 
 ### 1. Robotino manual <a id="1--installation-requirements"/> 
@@ -77,3 +78,38 @@ To generate your own software architecture diagram:
 Use the template under: [Readme Template](https://raw.githubusercontent.com/squirrel-project/squirrel_recommender/master/templates/README.md) to create your repository documentation. Please see [squirrel_robotino](https://github.com/squirrel-project/squirrel_robotino/blob/indigo_dev/README.md) as example.
 
 ### 3. Hardware Tests <a id="Hardware-test"/> 
+
+
+### 4. SQUIRREL Git workflow<a id="Git-workflow"/> 
+Follow the instructions to create the squirrel user, clone the stable repositories and configure the catkin workspace overlays, which are described in section <a href="#Administrator-manual">Administrator Manual</a>
+
+From here on the squirrel user on the robot should not be used for any development on the robot. Even for the packages which are cloned into /home/squirrel/catkin_ws.
+All development steps has to be done as the local user (e.g. bajo) in the corresponding catkin_ws overlay (e.g. /home/bajo/catkin_ws).
+
+1. Login with your user account on the robot (not squirrel).
+Clone the repositories in which you want to make and test your changes. Even if those are one of the repositories which are in squirrel's workspace. ROS will always use the code in your catkin workspace first.
+
+2. During the first time.
+   * Clone your fork.
+`git clone git@github.com:bajo/squirrel_perception.git`
+   * Add squirrel-project's upstream as a remote
+`git remote add upstream git@github.com:squirrel-project/squirrel_perception.git`
+3. Contribute your code to the squirrel-project's upstream repositories.
+  1. Pull the latest changes into your local repo.
+`git pull origin indigo_dev`
+  2. Create a new branch for your feature or bug fix
+`git checkout -b feature1`
+  3. Implement your changes, test them, commit them. 
+`git add changed_file.cpp`
+`git commit -m "add feature1 to changed_file.cpp"`
+  4. Fetch and merge the latest upstream changes into your development branch
+`git fetch upstream`
+`git merge upstream/indigo_dev`
+  5. If needed, fix merge conflicts and commit them
+`git mergetool`
+  6. Push your branch to your fork on github
+`git push origin feature1:feature1`
+  7. Open a pull request on github
+  8. Wait until you get feedback to your pull request or until it was merged. 
+  9. Done
+
