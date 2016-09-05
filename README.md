@@ -81,7 +81,8 @@ Use the template under: [Readme Template](https://raw.githubusercontent.com/squi
 
 
 ### 4. SQUIRREL Git workflow<a id="Git-workflow"/> 
-Follow the instructions to create the squirrel user, clone the stable repositories and configure the catkin workspace overlays, which are described in section <a href="#Administrator-manual">Administrator Manual</a>
+
+1. Follow the instructions to create the squirrel user, clone the stable repositories and configure the catkin workspace overlays, which are described in section <a href="#Administrator-manual">Administrator Manual</a>
 
 From here on the squirrel user on the robot should not be used for any development on the robot. Even for the packages which are cloned into /home/squirrel/catkin_ws.
 All development steps has to be done as the local user (e.g. bajo) in the corresponding catkin_ws overlay (e.g. /home/bajo/catkin_ws).
@@ -91,26 +92,26 @@ Clone the repositories in which you want to make and test your changes. Even if 
 
 3. Contribute your code to the squirrel-project's upstream repositories.
 (only the first time)
-3.1a Clone your fork. 
+  1. Clone your fork. 
 `git clone git@github.com:bajo/squirrel_perception.git`
-3.1b Add squirrel-project's upstream as a remote
+  2. Add squirrel-project's upstream as a remote
 `git remote add upstream git@github.com:squirrel-project/squirrel_perception.git`
 
-3.1 Pull the latest changes into your local repo.
+  1. Pull the latest changes into your local repo.
 `git pull origin indigo_dev`
-3.2 Create a new branch for your feature or bug fix
+  2. Create a new branch for your feature or bug fix
 `git checkout -b feature1`
-3.3 Implement your changes, test them, commit them. 
+  3. Implement your changes, test them, commit them. 
 `git add changed_file.cpp`
 `git commit -m "add feature1 to changed_file.cpp"`
-3.4 Fetch and merge the latest upstream changes into your development branch
+  4. Fetch and merge the latest upstream changes into your development branch
 `git fetch upstream`
 `git merge upstream/indigo_dev`
-3.5 If needed, fix merge conflicts and commit them
+  5. If needed, fix merge conflicts and commit them
 `git mergetool`
-3.6 Push your branch to your fork on github
+  6. Push your branch to your fork on github
 `git push origin feature1:feature1`
-3.7 Open a pull request on github
-3.8 Wait until you get feedback to your pull request or until it was merged. 
-3.9 Done
+  7. Open a pull request on github
+  8. Wait until you get feedback to your pull request or until it was merged. 
+  9. Done
 
