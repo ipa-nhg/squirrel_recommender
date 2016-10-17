@@ -19,8 +19,8 @@ This section provide some instructions to install a standard setup.
 ##### Installation
 The first step is to download the 2 bash scripts and execute them as user robotino:
 ```
-wget https://raw.githubusercontent.com/bajo/squirrel_recommender/fix_insta_script/setup_robotino/InstallSquirrel.sh
-wget https://raw.githubusercontent.com/bajo/squirrel_recommender/fix_insta_script/setup_robotino/SquirrelSetup.sh
+wget https://raw.githubusercontent.com/squirrel-project/squirrel_recommender/master/setup_robotino/InstallSquirrel.sh
+wget https://raw.githubusercontent.com/squirrel-project/squirrel_recommender/master/setup_robotino/SquirrelSetup.sh
 chmod +x InstallSquirrel.sh
 chmod +x SquirrelSetup.sh
 ./InstallSquirrel.sh -r robot_name -arm true
