@@ -52,6 +52,22 @@ This user will be automatically configured, getting the necessary rights to star
 That means, if ROS needs to find a package, first will check if my UserName has an Overlay, if not will check if squirrel user has an Overlay and as last option will take the ROS release. 
 For example, if I want to test the actual status of the perception. I can create a new account "perception", and clone into */home/perception/catkin_ws/src* the perception repository, compile only the perception repository and run it. All the messages and common software package needed are already on "squirrel" user compiled. 
 
+##### Setup your workspace
+
+Install wstool:
+```
+sudo apt-get install python-wstool
+```
+
+Update your workspace:
+```
+cd ~/catkin_ws/src
+wstool init
+wget https://raw.githubusercontent.com/squirrel-project/squirrel_recommender/master/.rosinstall
+wstool update 
+```
+For further info please see: http://wiki.ros.org/wstool
+
 #### 1.2. User Manual <a id="User-manual"/> 
 ##### Start and stop the robot
 
