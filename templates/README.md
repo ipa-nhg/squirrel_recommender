@@ -1,11 +1,13 @@
+Travis-CI: [![Build Status](https://travis-ci.org/squirrel-project/repository_name.svg?branch=indigo_dev)](https://travis-ci.org/squirrel-project/repository_name)
+
+# repository_name
 <a id="top"/> 
-#repository_name
 
 **Description of the repository, for example:** This repository holds packages for hardware launch files and configuration, as well as the simulation model for starting up the basic layer for operating Robotino
 
 Technical Maintainer: [**github-user**](https://github.com/**github-user**/) (**Maintainer's Name**, **Institution**) - **email@email.address.com**
 
-##Contents
+## Contents
 
 1. <a href="#1--installation-requirements">Installation Requirements</a>
 2. <a href="#2--execution">Execution</a>
@@ -14,13 +16,13 @@ Technical Maintainer: [**github-user**](https://github.com/**github-user**/) (**
 
 ## 1. Installation Requirements: <a id="1--installation-requirements"/> 
 
-####Debian packages
+#### Debian packages
 **Only if requires a special debian package that has to be extra installed**
 
-####Squirrel packages
+#### Squirrel packages
 **Only if requires other squirrel packages overlays. For example squirrel_common**
 
-####ROS packages
+#### ROS packages
 **Commonly**
 The ROS packages dependencies can be installed with the command:
 ```
