@@ -57,11 +57,11 @@ cd /home/squirrel/catkin_ws/src
 git clone https://github.com/squirrel-project/squirrel_robotino
 git clone https://github.com/squirrel-project/squirrel_common
 git clone https://github.com/squirrel-project/squirrel_driver
-git clone https://github.com/squirrel-project/squirrel_kclhand
+git clone https://github.com/squirrel-project/dynamixel_motor
 cd /home/squirrel/catkin_ws/
 catkin_make install
 rosdep update
-rosdep install --from-path src -i -y
+rosdep install --from-path src -i -y -r
 
 
 echo -e "\n${green}INFO: Enable passwordless login${NC}\n"
