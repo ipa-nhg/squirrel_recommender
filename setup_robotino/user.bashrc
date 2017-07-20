@@ -103,7 +103,7 @@ fi
 source /etc/robotino.bash.bashrc
 
 # provide setup scripts for all users
-export PATH=/home/squirrel/squirrel_recommender/setup_robotino:$PATH
+export PATH=/u/squirrel/squirrel_recommender/setup_robotino:$PATH
 
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
@@ -121,20 +121,19 @@ export ROS_MASTER_URI=http://robotino:11311
 
 if [ -e $MY_CATKIN_WORKSPACE/devel/setup.bash ]; then
     source $MY_CATKIN_WORKSPACE/devel/setup.bash
-elif [ -e /home/squirrel/catkin_ws/devel/setup.bash ]; then
-    source /home/squirrel/catkin_ws/devel/setup.bash
+elif [ -e /u/squirrel/catkin_ws/devel/setup.bash ]; then
+    source /u/squirrel/catkin_ws/devel/setup.bash
 else
     source /opt/ros/mydistro/setup.bash
 fi
 
 case '$ROS_PACKAGE_PATH' in
-    */home/squirrel/catkin_ws/devel*);;
+    */u/squirrel/catkin_ws/devel*);;
     *)
-    if [ -e /home/squirrel/catkin_ws/devel/setup.bash ]; then
+    if [ -e /u/squirrel/catkin_ws/devel/setup.bash ]; then
         echo -e "***************************\nYour squirrel admin created an overlay for the robot user\n"
     fi
     ;;
 esac
 
-export JAVA_HOME=/usr/lib/jvm/java-6-openjdk-amd64
 

@@ -1,0 +1,230 @@
+= Squirrel Installation Manual
+
+== Contents
+
+.. <<Setup robot pcs,Setup robot pcs>>
+.. <<Install NFS,Install NFS>>
+.. <<Enable passwordless login,Enable passwordless login>>
+.. <<Setup NTP time synchronitation,Setup NTP time synchronitation>>
+
+
+=== [[Setup robot pcs]] Setup robot pcs 
+
+==== Setup ssh server
+
+Install openssh server on all robot pcs
+
+----
+sudo apt-get install openssh-server
+----
+
+Let the server send a alive interval to clients to not get a broken pipe. Execute the following line on all robot pcs:
+
+----
+echo "ClientAliveInterval 60" | sudo tee -a /etc/ssh/sshd_config
+----
+
+=== [[Setup internal robot network]] Setup internal robot network
+
+
+The +/etc/network/interfaces+  should looks:
+
+----
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet static
+address 10.0.1.1 (?)
+----
+
+Be sure that you are using the eth0 network port, you can rename your port modifying the udev rules (/etc/udev/rules.d/70-persistent-net.rules).
+
+
+=== [[Install NFS]] Install NFS
+
+==== NFS configuration on scrat (server)
+
+Install the NFS server package and create the NFS directory
+
+----
+sudo apt-get install nfs-kernel-server
+sudo mkdir /u
+----
+
+Add the following line to /etc/fstab:
+
+----
+/home /u none bind 0 0
+----
+
+Now we can mount the drive
+
+----
+sudo mount /u
+----
+
+Activate +STATD+ in +/etc/default/nfs-common+ by changing th +NEED_STATD+ to yes
+
+----
+NEED_STADT=yes
+----
+
+Add the following line to +/etc/exports+:
+
+----
+/u *(rw,fsid=0,sync,no_subtree_check)
+----
+
+Change the home directory of the users from +/home/USER+ to +/u/USER+ in
+the +/etc/passwd+ file.
+
+After finishing you need to reboot the pc
+
+----
+sudo reboot
+----
+
+==== NFS configuration on robotino (client)
+
+Install the NFS client package and create the NFS directory
+
+----
+sudo apt-get install nfs-kernel-server autofs
+sudo mkdir /u
+----
+
+Activate +STATD+ in +/etc/default/nfs-common+ by changing the +NEED_STATD+ to
+yes
+
+----
+NEED_STATD=yes
+----
+
+Edit +/etc/auto.master+ and add
+
+----
+/-  /etc/auto.direct
+----
+
+Create a new file /etc/auto.direct with the following line:
+
+----
+/u  -fstype=nfs4    scrat:/
+----
+
+Activate the NFS
+
+----
+sudo update-rc.d autofs defaults
+sudo service autofs restart
+sudo modprobe nfs
+----
+
+Change the home directory of the users from +/home/USER+ to +/u/USER+ in
+the +/etc/passwd+ file.
+
+After finishing you need to reboot the pc
+
+----
+sudo reboot
+----
+
+=== [[Enable passwordless login]] Enable passwordless login
+
+Enable passwordless login to all robot pcs for robot user:
+
+----
+ssh-keygen
+ssh-copy-id robotino
+ssh-copy-id scrat
+----
+
+For root user it is necessary allow login as root over ssh session, open the file +/etc/ssh/sshd_config+ and set +PermitRootLogin yes+ ,then enable passwordless login:
+----
+su root
+ssh-keygen
+ssh-copy-id robotino
+ssh-copy-id scrat
+----
+
+=== [[Setup NTP time synchronitation]] Setup NTP time synchronitation
+
+Install the ntp package
+
+----
+sudo apt-get install ntp
+----
+
+==== NTP configuration on scrat (NTP server)
+
+Edit +/etc/ntp:
+
+----
+# /etc/ntp.conf, configuration for ntpd; see ntp.conf(5) for help
+
+driftfile /var/lib/ntp/ntp.drift
+
+# Enable this if you want statistics to be logged.
+#statsdir /var/log/ntpstats/
+
+statistics loopstats peerstats clockstats
+filegen loopstats file loopstats type day enable
+filegen peerstats file peerstats type day enable
+filegen clockstats file clockstats type day enable
+
+# Specify one or more NTP servers.
+
+# Use servers from the NTP Pool Project. Approved by Ubuntu Technical Board
+# on 2011-02-08 (LP: #104525). See http://www.pool.ntp.org/join.html for
+# more information.
+server 0.de.pool.ntp.org
+
+server  127.127.1.0     # local clock
+fudge   127.127.1.0 stratum 10
+restrict 10.0.1.2 mask 255.255.255.0 nomodify notrap
+
+# By default, exchange time with everybody, but don't allow configuration.
+restrict -4 default kod notrap nomodify nopeer noquery
+restrict -6 default kod notrap nomodify nopeer noquery
+
+# Local users may interrogate the ntp server more closely.
+restrict 127.0.0.1
+restrict ::1
+
+----
+
+==== NTP configuration on torso, sensorring and head pcs (NTP clients)
+
+Edit +/etc/ntp.conf+:
+
+----
+# /etc/ntp.conf, configuration for ntpd; see ntp.conf(5) for help
+
+driftfile /var/lib/ntp/ntp.drift
+
+# Enable this if you want statistics to be logged.
+#statsdir /var/log/ntpstats/
+
+statistics loopstats peerstats clockstats
+filegen loopstats file loopstats type day enable
+filegen peerstats file peerstats type day enable
+filegen clockstats file clockstats type day enable
+
+# Specify one or more NTP servers.
+
+# Use servers from the NTP Pool Project. Approved by Ubuntu Technical Board
+# on 2011-02-08 (LP: #104525). See http://www.pool.ntp.org/join.html for
+# more information.
+server 10.0.1.2
+
+# By default, exchange time with everybody, but don't allow configuration.
+restrict -4 default kod notrap nomodify nopeer noquery
+restrict -6 default kod notrap nomodify nopeer noquery
+
+# Local users may interrogate the ntp server more closely.
+restrict 127.0.0.1
+restrict ::1
+
+----
+
