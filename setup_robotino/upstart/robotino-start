@@ -67,6 +67,7 @@ fi
 # Punch it.
 export ROS_HOME=$(echo ~squirrel)/.ros
 export ROS_LOG_DIR=/tmp
+sleep 30
 setuidgid root roslaunch $LAUNCH_FILENAME robot:=$ROBOT &
 PID=$!
 
