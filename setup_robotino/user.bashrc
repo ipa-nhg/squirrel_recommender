@@ -115,7 +115,7 @@ export MY_CATKIN_WORKSPACE=~/catkin_ws
 
 export ROBOT=myrobot
 export ROSLAUNCH_SSH_UNKNOWN=1
-export ROS_MASTER_URI=http://robotino:11311
+export ROS_MASTER_URI=http://scrat:11311
 
 # DONT TOUCH THIS BELOW THE LINE !!!
 

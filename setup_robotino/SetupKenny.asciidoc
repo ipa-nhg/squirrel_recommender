@@ -1,14 +1,16 @@
 = Squirrel Installation Manual
 
-== Contents
+=== Contents
 
-.. <<Setup robot pcs,Setup robot pcs>>
-.. <<Install NFS,Install NFS>>
-.. <<Enable passwordless login,Enable passwordless login>>
-.. <<Setup NTP time synchronitation,Setup NTP time synchronitation>>
+.. <<Setup-robot-pcs,Setup robot pcs>>
+.. <<Install-NFS,Install NFS>>
+.. <<Enable-passwordless-login,Enable passwordless login>>
+.. <<Setup-NTP-time-synchronitation,Setup NTP time synchronitation>>
+.. <<Raspberry,Raspberry>>
 
 
-=== [[Setup robot pcs]] Setup robot pcs 
+
+=== [[Setup-robot-pcs]] Setup robot pcs 
 
 ==== Setup ssh server
 
@@ -24,24 +26,8 @@ Let the server send a alive interval to clients to not get a broken pipe. Execut
 echo "ClientAliveInterval 60" | sudo tee -a /etc/ssh/sshd_config
 ----
 
-=== [[Setup internal robot network]] Setup internal robot network
 
-
-The +/etc/network/interfaces+  should looks:
-
-----
-auto lo
-iface lo inet loopback
-
-auto eth0
-iface eth0 inet static
-address 10.0.1.1 (?)
-----
-
-Be sure that you are using the eth0 network port, you can rename your port modifying the udev rules (/etc/udev/rules.d/70-persistent-net.rules).
-
-
-=== [[Install NFS]] Install NFS
+=== [[Install-NFS]] Install NFS
 
 ==== NFS configuration on scrat (server)
 
@@ -130,7 +116,7 @@ After finishing you need to reboot the pc
 sudo reboot
 ----
 
-=== [[Enable passwordless login]] Enable passwordless login
+=== [[Enable-passwordless-login]] Enable passwordless login
 
 Enable passwordless login to all robot pcs for robot user:
 
@@ -148,7 +134,7 @@ ssh-copy-id robotino
 ssh-copy-id scrat
 ----
 
-=== [[Setup NTP time synchronitation]] Setup NTP time synchronitation
+=== [[Setup-NTP-time-synchronitation]] Setup NTP time synchronitation
 
 Install the ntp package
 
@@ -182,7 +168,7 @@ server 0.de.pool.ntp.org
 
 server  127.127.1.0     # local clock
 fudge   127.127.1.0 stratum 10
-restrict 10.0.1.2 mask 255.255.255.0 nomodify notrap
+restrict scrat mask 255.255.255.0 nomodify notrap
 
 # By default, exchange time with everybody, but don't allow configuration.
 restrict -4 default kod notrap nomodify nopeer noquery
@@ -194,7 +180,7 @@ restrict ::1
 
 ----
 
-==== NTP configuration on torso, sensorring and head pcs (NTP clients)
+==== NTP configuration on robotino and raspberry (NTP clients)
 
 Edit +/etc/ntp.conf+:
 
@@ -216,7 +202,7 @@ filegen clockstats file clockstats type day enable
 # Use servers from the NTP Pool Project. Approved by Ubuntu Technical Board
 # on 2011-02-08 (LP: #104525). See http://www.pool.ntp.org/join.html for
 # more information.
-server 10.0.1.2
+server scrat
 
 # By default, exchange time with everybody, but don't allow configuration.
 restrict -4 default kod notrap nomodify nopeer noquery
@@ -226,5 +212,14 @@ restrict -6 default kod notrap nomodify nopeer noquery
 restrict 127.0.0.1
 restrict ::1
 
+----
+
+=== [[Raspberry]] Raspberry
+
+to be able to run nodes on raspberry with a unique launch file using machine tags you have to install and update the following packages in the scrat and robotino pcs:
+
+----
+sudo pip install 'paramiko==1.15.1'
+sudo pip install --upgrade pyserial
 ----
 
